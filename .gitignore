@@ -161,5 +161,4 @@ dev-script/*
 
 .DS_Store
 __debug_bin
-go-todo-service
 main
