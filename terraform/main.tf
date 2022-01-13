@@ -8,6 +8,13 @@ terraform {
       version = "~>2.0"
     }
   }
+
+  backend "azurerm" {
+    resource_group_name  = "dp-tf-rg"
+    storage_account_name = "dptfstacc"
+    container_name       = "tfstatedevops"
+    key                  = "terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
