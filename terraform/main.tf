@@ -4,7 +4,7 @@ terraform {
 
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "~>2.0"
     }
   }
@@ -45,6 +45,6 @@ output "client_certificate" {
 }
 
 output "kube_config" {
-  value = azurerm_kubernetes_cluster.aks_cluster.kube_config_raw
+  value     = azurerm_kubernetes_cluster.aks_cluster.kube_config_raw
   sensitive = true
 }
