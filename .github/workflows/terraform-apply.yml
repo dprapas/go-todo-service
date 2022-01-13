@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ARM_CLIENT_ID: 'fd66979b-b579-45c1-b7ee-98015e1da44f'
+      ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
-      ARM_SUBSCRIPTION_ID: '739a03e9-c6fe-458b-9bf4-350f867c21ee'
-      ARM_TENANT_ID: 'b2748d0a-856e-4184-bda8-831f9ffa8a48'
+      ARM_SUBSCRIPTION_ID: ${{secrets.TF_ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.TF_ARM_TENANT_ID}}
 
     steps:
       - uses: actions/checkout@v2
@@ -24,10 +24,6 @@ jobs:
       - name: Terraform Init
         run: terraform init
         working-directory: ./terraform
-
-#      - name: Terraform Format
-#        run: terraform fmt -check
-#        working-directory: ./terraform
 
       - name: Terraform Plan
         run: terraform plan
