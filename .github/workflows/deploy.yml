@@ -21,3 +21,12 @@ jobs:
       - run: |
           docker build . -t dprapasacr001.azurecr.io/go-todo-service:1.0
           docker push dprapasacr001.azurecr.io/go-todo-service:1.0
+
+      - uses: deliverybot/helm@master
+        with:
+          release: 'go-todo-service'
+          namespace: 'default'
+          token: '${{ github.token }}'
+          chart: './helm/go-todo-service'
+        env:
+          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
