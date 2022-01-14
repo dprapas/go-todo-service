@@ -1,50 +1,31 @@
 name: Terraform Apply
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
-  build:
+  terraform:
     runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.TF_ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.TF_ARM_TENANT_ID}}
 
     steps:
       - uses: actions/checkout@v2
 
-      - uses: azure/docker-login@v1
-        with:
-          login-server: dprapasacr001.azurecr.io
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
 
-      - run: |
-          docker build . -t dprapasacr001.azurecr.io/go-todo-service:1.0
-          docker push dprapasacr001.azurecr.io/go-todo-service:1.0
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
 
-#  terraform:
-#    runs-on: ubuntu-latest
-#
-#    env:
-#      ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
-#      ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
-#      ARM_SUBSCRIPTION_ID: ${{secrets.TF_ARM_SUBSCRIPTION_ID}}
-#      ARM_TENANT_ID: ${{secrets.TF_ARM_TENANT_ID}}
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Setup Terraform
-#        uses: hashicorp/setup-terraform@v1
-#
-#      - name: Terraform Init
-#        run: terraform init
-#        working-directory: ./terraform
-#
-#      - name: Terraform Plan
-#        run: terraform plan
-#        working-directory: ./terraform
-#
-#      - name: Terraform Apply
-#        run: terraform apply -auto-approve
-#        working-directory: ./terraform
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
