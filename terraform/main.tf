@@ -26,6 +26,11 @@ resource "azurerm_resource_group" "aks_rg" {
   location = "West Europe"
 }
 
+resource "azurerm_resource_group" "acr_rg" {
+  name     = "acr-rg"
+  location = "North Europe"
+}
+
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                = "dp-aks-cluster"
   location            = azurerm_resource_group.aks_rg.location
@@ -48,9 +53,9 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 }
 
 resource "azurerm_container_registry" "acr" {
+  resource_group_name = azurerm_resource_group.acr_rg.name
+  location            = azurerm_resource_group.acr_rg.location
   name                = "dprapasACR001"
-  resource_group_name = "acr-rg"
-  location            = "northeurope"
   sku                 = "Basic"
   admin_enabled       = true
 }
