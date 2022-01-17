@@ -47,6 +47,17 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   }
 }
 
+resource "azurerm_role_assignment" "acr_pull_role_assignment" {
+  scope                = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[0].object_id
+}
+
+data "azurerm_container_registry" "acr" {
+  name                = "dprapasACR001"
+  resource_group_name = "acr-rg"
+}
+
 output "client_certificate" {
   value = azurerm_kubernetes_cluster.aks_cluster.kube_config.0.client_certificate
 }
