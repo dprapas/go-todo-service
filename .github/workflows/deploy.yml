@@ -32,5 +32,6 @@ jobs:
           token: '${{ github.token }}'
           chart: './helm/go-todo-service'
           value-files: './helm/go-todo-service/values.yaml'
+          helm: 'helm3'
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
